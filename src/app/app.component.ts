@@ -1,36 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2  } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { User } from './models/users';
 import { UserService } from './user.service';
 import { Table } from 'primeng/table'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { trigger, transition, animate, style } from '@angular/animations';
-// import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [MessageService, ConfirmationService],
-  animations: [
-    trigger('slideInFromTop', [
-      transition(':enter', [
-        style({ transform: 'translateY(-100%)', opacity: 0 }),
-        animate('300ms ease-in', style({ transform: 'translateY(0)', opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate('300ms ease-out', style({ transform: 'translateY(-100%)', opacity: 0 })),
-      ]),
-    ]),
-    trigger('slideInFromRight', [
-      transition(':enter', [
-        style({ transform: 'translateX(100%)', opacity: 0 }),
-        animate('300ms ease-in', style({ transform: 'translateX(0)', opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate('300ms ease-out', style({ transform: 'translateX(100%)', opacity: 0 })),
-      ]),
-    ]),
-  ],
   
 })
 export class AppComponent implements OnInit {
@@ -46,13 +24,9 @@ export class AppComponent implements OnInit {
 
   @ViewChild('dt', { static: false })
   dt!: Table; 
-
   userDialog: boolean = false;
   editUserDialog: boolean = false;
-
   users!: User[];
-  // users: User[]= [];
-
   
   user: User = {
     id: '',
@@ -82,10 +56,7 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private userService: UserService,
-    private fb: FormBuilder,
-    private el: ElementRef,
-    private renderer: Renderer2,
-    // private http: HttpClient
+    private fb: FormBuilder
   ) {
     this.userForm = this.fb.group({
       firstname: ['', Validators.required],
@@ -96,6 +67,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getUsers();
+  }
+  getUsers(): void{
     this.loading = true; 
     this.userService.getUsers().subscribe(
       (data2: User[]) => {
@@ -108,9 +82,6 @@ export class AppComponent implements OnInit {
         this.loading = false;
       }
     );
-
-
-    // this.getPosts();
   }
 
   openNew() {
@@ -166,15 +137,6 @@ export class AppComponent implements OnInit {
       });
     }
   }
-  
-
-  // deleteUser(postId: number | string): void {
-  //   if (confirm('Are you sure you want to delete this user?')) {
-  //     this.userService.deleteUser(postId).subscribe(() => {
-  //       this.users = this.users.filter((post) => post.id !== postId);
-  //     });
-  //   }
-  // }
 
   hideDialog() {
     this.userDialog = false;
@@ -184,15 +146,8 @@ export class AppComponent implements OnInit {
   showForm() {
     this.showFormView = true;
   }
-  // openNewAndShowForm() {
-  //   this.openNew();
-  //   this.showForm();
-  // }
-  
-
   saveUser() {
     this.submitted = true;
-  
     const formValues = this.userForm.value;
   
     if (this.selectedUserForEdit) {
@@ -267,24 +222,6 @@ export class AppComponent implements OnInit {
 
   getSeverity(status: string) {
     switch (status) {
-      // Handle severity based on status
     }
-  }
-
-
-  // getPosts(): void {
-  //   this.userService.getPosts().subscribe((data: User[]) => {
-  //     this.posts = data;
-  //     console.log(data, 'POST3333');
-  //   });
-  // }
-
-  // deletePost(postId: number | string): void {
-  //   if (confirm('Are you sure you want to delete this user?')) {
-  //     this.userService.deletePost(postId).subscribe(() => {
-  //       this.posts = this.posts.filter((post) => post.id !== postId);
-  //     });
-  //   }
-  // }
-    
+  }  
 }

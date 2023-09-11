@@ -109,22 +109,6 @@ export class UserService {
     );
   }
 
-  // deleteUser(id: number | string): Observable<any> {
-  //   const url = `${this.apiUrl}/${id}`;
-  //   return this.http.delete(url).pipe(
-  //     catchError((error: any) => {
-  //       console.error('Error deleting user:', error);
-  //       return throwError(error);
-  //     }),
-  //     tap((response: any) => {
-  //       if (response) {
-  //         console.log('User deleted successfully', response);
-  //       } else {
-  //         console.log('User deleted successfully');
-  //       }
-  //     })
-  //   );
-  // }
   deleteUser(id: number | string): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<void>(url);
@@ -133,14 +117,4 @@ export class UserService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<User>(url);
   }
-
-  // getPosts(): Observable<User[]> {
-  //   return this.http.get<User[]>(this.apiUrl);
-  // }
-
-  // deletePost(postId: number | string): Observable<void> {
-  //   const url = `${this.apiUrl}/${postId}`;
-  //   return this.http.delete<void>(url);
-  // }
-  
 }
