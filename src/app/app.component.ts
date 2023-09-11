@@ -175,7 +175,7 @@ export class AppComponent implements OnInit {
     const formValues = this.userForm.value;
   
     if (this.selectedUserForEdit) {
-      // Updating user
+      // Update user
       this.selectedUserForEdit.name.firstname = formValues.firstname;
       this.selectedUserForEdit.name.lastname = formValues.lastname;
       this.selectedUserForEdit.email = formValues.email;
