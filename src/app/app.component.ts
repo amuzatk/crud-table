@@ -4,7 +4,7 @@ import { User } from './models/users';
 import { UserService } from './user.service';
 import { Table } from 'primeng/table'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {AnimationBuilder, animate, style, trigger, transition } from '@angular/animations';
+import { animate, style, trigger, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +15,10 @@ import {AnimationBuilder, animate, style, trigger, transition } from '@angular/a
     trigger('fadeInOut', [
       transition(':enter', [
         style({ opacity: 0 }),
-        animate('3000ms', style({ opacity: 1 })),
+        animate('1000ms', style({ opacity: 1 })),
       ]),
       transition(':leave', [
-        animate('3000ms', style({ opacity: 0 })),
+        animate('1000ms', style({ opacity: 0 })),
       ]),
     ]),
   ],
@@ -69,8 +69,7 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private userService: UserService,
-    private fb: FormBuilder,
-    private animationBuilder: AnimationBuilder
+    private fb: FormBuilder
   ) {
     this.userForm = this.fb.group({
       firstname: ['', Validators.required],
@@ -107,6 +106,7 @@ export class AppComponent implements OnInit {
     this.formViewVisible = true;
     this.dialogHeader = 'Create User';
   }
+
   deleteSelectedUsers() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected users?',
