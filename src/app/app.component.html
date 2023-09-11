@@ -108,6 +108,7 @@
         [modal]="true"
         [responsive]="true"
         [style]="{ width: '400px' }"
+        (onHide)="onDialogHide()"
       >
         <form [formGroup]="userForm" (ngSubmit)="saveUser()">
           <div class="p-fluid">

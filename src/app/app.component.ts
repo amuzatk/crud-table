@@ -4,7 +4,7 @@ import { User } from './models/users';
 import { UserService } from './user.service';
 import { Table } from 'primeng/table'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AnimationBuilder, animate, style, trigger, transition } from '@angular/animations';
+import {AnimationBuilder, animate, style, trigger, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,7 @@ import { AnimationBuilder, animate, style, trigger, transition } from '@angular/
         animate('3000ms', style({ opacity: 0 })),
       ]),
     ]),
-  ], 
+  ],
 })
 export class AppComponent implements OnInit {
   posts: User[] = [];
@@ -107,7 +107,6 @@ export class AppComponent implements OnInit {
     this.formViewVisible = true;
     this.dialogHeader = 'Create User';
   }
-
   deleteSelectedUsers() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected users?',
@@ -131,16 +130,22 @@ export class AppComponent implements OnInit {
         email: user.email,
         username: user.username,
       });
-      this.formViewVisible = true; // Show the form view
+      this.formViewVisible = true;
       this.editUserDialog = true;
     }
   }
+  
+  onDialogHide() {
+    setTimeout(() => {
+    this.formViewVisible = false;
+    }, 3000);
+  }
 
   cancelEdit() {
-    this.formViewVisible = false; // Hide the form view
+    this.formViewVisible = false;
     setTimeout(() => {
       this.editUserDialog = false;
-    }, 300); // Wait for the animation to complete before hiding the dialog
+    }, 300);
   }
   
 
