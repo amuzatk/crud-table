@@ -109,7 +109,7 @@ export class AppComponent implements OnInit {
     this.selectedUserForEdit = null;
     this.userForm.reset();
     this.userForm.markAsUntouched();
-    // this.editUserDialog = true;
+    this.editUserDialog = true;
     this.isCreatingUser = true;
     this.dialogHeader = 'Create User';
   }
@@ -129,18 +129,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // editUser(user: User) {
-  //   if (user && user.name && user.email && user.username) {
-  //     this.selectedUserForEdit = { ...user };
-  //     this.userForm.patchValue({
-  //       firstname: user.name.firstname,
-  //       lastname: user.name.lastname,
-  //       email: user.email,
-  //       username: user.username,
-  //     });
-  //     this.editUserDialog = true;
-  //   }
-  // }
   editUser(user: User) {
     if (user && user.name && user.email && user.username) {
       this.selectedUserForEdit = { ...user };
@@ -154,6 +142,18 @@ export class AppComponent implements OnInit {
     }
   }
 
+  hideDialog() {
+    this.userDialog = false;
+    this.submitted = false;
+  }
+
+  showForm() {
+    this.showFormView = true;
+  }
+  // openNewAndShowForm() {
+  //   this.openNew();
+  //   this.showForm();
+  // }
 
   cancelEdit() {
     this.editUserDialog = false;
@@ -216,19 +216,6 @@ export class AppComponent implements OnInit {
       //   );
       // }
     });
-  }
-
-  hideDialog() {
-    this.userDialog = false;
-    this.submitted = false;
-  }
-
-  showForm() {
-    this.showFormView = true;
-  }
-  openNewAndShowForm() {
-    this.openNew();
-    this.showForm();
   }
   
 
