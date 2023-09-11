@@ -100,7 +100,7 @@
   </p-table>
 </div>
 
-<div>
+<div *ngIf="formViewVisible" [@fadeInOut]>
     <div>
       <p-dialog
         header="Edit User"

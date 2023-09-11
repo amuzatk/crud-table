@@ -1,15 +1,27 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { User } from './models/users';
 import { UserService } from './user.service';
 import { Table } from 'primeng/table'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AnimationBuilder, animate, style, trigger, transition } from '@angular/animations';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [MessageService, ConfirmationService],
-  
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('3000ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('3000ms', style({ opacity: 0 })),
+      ]),
+    ]),
+  ], 
 })
 export class AppComponent implements OnInit {
   posts: User[] = [];
@@ -27,6 +39,7 @@ export class AppComponent implements OnInit {
   userDialog: boolean = false;
   editUserDialog: boolean = false;
   users!: User[];
+  formViewVisible = false;
   
   user: User = {
     id: '',
@@ -56,7 +69,8 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private userService: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private animationBuilder: AnimationBuilder
   ) {
     this.userForm = this.fb.group({
       firstname: ['', Validators.required],
@@ -90,6 +104,7 @@ export class AppComponent implements OnInit {
     this.userForm.markAsUntouched();
     this.editUserDialog = true;
     this.isCreatingUser = true;
+    this.formViewVisible = true;
     this.dialogHeader = 'Create User';
   }
 
@@ -107,7 +122,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
   editUser(user: User) {
     if (user && user.name && user.email && user.username) {
       this.selectedUserForEdit = { ...user };
@@ -117,12 +131,18 @@ export class AppComponent implements OnInit {
         email: user.email,
         username: user.username,
       });
+      this.formViewVisible = true; // Show the form view
       this.editUserDialog = true;
     }
   }
+
   cancelEdit() {
-    this.editUserDialog = false;
+    this.formViewVisible = false; // Hide the form view
+    setTimeout(() => {
+      this.editUserDialog = false;
+    }, 300); // Wait for the animation to complete before hiding the dialog
   }
+  
 
   deleteUser(postId: number | string): void {
     if (confirm('Are you sure you want to delete this user?')) {
