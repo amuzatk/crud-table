@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import { Table } from 'primeng/table'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { trigger, transition, animate, style } from '@angular/animations';
+// import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -33,6 +34,7 @@ import { trigger, transition, animate, style } from '@angular/animations';
   
 })
 export class AppComponent implements OnInit {
+  posts: User[] = [];
   loading = false;
   showFormView = false;
   userForm: FormGroup;
@@ -49,6 +51,8 @@ export class AppComponent implements OnInit {
   editUserDialog: boolean = false;
 
   users!: User[];
+  // users: User[]= [];
+
   
   user: User = {
     id: '',
@@ -80,7 +84,8 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private fb: FormBuilder,
     private el: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    // private http: HttpClient
   ) {
     this.userForm = this.fb.group({
       firstname: ['', Validators.required],
@@ -103,6 +108,9 @@ export class AppComponent implements OnInit {
         this.loading = false;
       }
     );
+
+
+    // this.getPosts();
   }
 
   openNew() {
@@ -138,9 +146,35 @@ export class AppComponent implements OnInit {
         email: user.email,
         username: user.username,
       });
-      this.editUserDialog = true; // Open the dialog directly here
+      this.editUserDialog = true;
     }
   }
+  cancelEdit() {
+    this.editUserDialog = false;
+  }
+
+  deleteUser(postId: number | string): void {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.userService.deleteUser(postId).subscribe(() => {
+        this.users = this.users.filter((post) => post.id !== postId);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'User Deleted',
+          life: 3000
+        });
+      });
+    }
+  }
+  
+
+  // deleteUser(postId: number | string): void {
+  //   if (confirm('Are you sure you want to delete this user?')) {
+  //     this.userService.deleteUser(postId).subscribe(() => {
+  //       this.users = this.users.filter((post) => post.id !== postId);
+  //     });
+  //   }
+  // }
 
   hideDialog() {
     this.userDialog = false;
@@ -154,69 +188,6 @@ export class AppComponent implements OnInit {
   //   this.openNew();
   //   this.showForm();
   // }
-
-  cancelEdit() {
-    this.editUserDialog = false;
-  }
-  deleteUser(user: User) {
-    console.log('deleteUser function called'); // Add this line
-    console.log('User ID to delete:', user.id);
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this user?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-
-      accept: () => {
-        const userId: number = typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
-        console.log('Converted User ID:', userId);
-  
-        this.userService.deleteUser(userId).subscribe({
-          next: () => {
-            console.log('User deleted successfully');
-          },
-          error: (error) => {
-            console.error('Error deleting user:', error);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Failed to delete user',
-              life: 3000
-            });
-          },
-          complete: () => {
-            console.log('Observable completed.');
-          }
-        });
-      }
-
-      // accept: () => {
-      //   // Convert the user.id to a number if it's a string
-      //   const userId = typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
-  
-      //   this.userService.deleteUser(userId).subscribe(
-      //     () => {
-      //       // User deleted successfully
-      //       this.users = this.users.filter((u) => u.id !== userId);
-      //       this.messageService.add({
-      //         severity: 'success',
-      //         summary: 'Successful',
-      //         detail: 'User Deleted',
-      //         life: 3000
-      //       });
-      //     },
-      //     (error) => {
-      //       console.error('Error deleting user:', error);
-      //       this.messageService.add({
-      //         severity: 'error',
-      //         summary: 'Error',
-      //         detail: 'Failed to delete user',
-      //         life: 3000
-      //       });
-      //     }
-      //   );
-      // }
-    });
-  }
   
 
   saveUser() {
@@ -299,4 +270,21 @@ export class AppComponent implements OnInit {
       // Handle severity based on status
     }
   }
+
+
+  // getPosts(): void {
+  //   this.userService.getPosts().subscribe((data: User[]) => {
+  //     this.posts = data;
+  //     console.log(data, 'POST3333');
+  //   });
+  // }
+
+  // deletePost(postId: number | string): void {
+  //   if (confirm('Are you sure you want to delete this user?')) {
+  //     this.userService.deletePost(postId).subscribe(() => {
+  //       this.posts = this.posts.filter((post) => post.id !== postId);
+  //     });
+  //   }
+  // }
+    
 }
