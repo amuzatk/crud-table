@@ -102,10 +102,9 @@ export class AppComponent implements OnInit {
     this.userForm.reset();
     this.userForm.markAsUntouched();
     this.editUserDialog = true;
-    this.isCreatingUser = true;
+    this.isCreatingUser = true; // Set the flag to indicate you are creating a new user
     this.formViewVisible = true;
-    // this.dialogHeader = 'Create User';
-    this.dialogHeader = this.getDialogHeader();
+    this.dialogHeader = 'Create User'; // Set the dialog header to "Create User"
   }
 
   deleteSelectedUsers() {
@@ -122,6 +121,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
   editUser(user: User) {
     if (user && user.name && user.email && user.username) {
       this.selectedUserForEdit = { ...user };
@@ -133,8 +133,8 @@ export class AppComponent implements OnInit {
       });
       this.formViewVisible = true;
       this.editUserDialog = true;
-      // this.dialogHeader = 'Edit User';
-      this.dialogHeader = this.getDialogHeader();
+      this.isCreatingUser = false; 
+      this.dialogHeader = 'Edit User'; 
     }
   }
   

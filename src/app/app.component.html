@@ -103,13 +103,13 @@
 <div *ngIf="formViewVisible" [@fadeInOut]>
   <div>
     <p-dialog
-      header="Edit User"
-      [(visible)]="editUserDialog"
-      [modal]="true"
-      [responsive]="true"
-      [style]="{ width: '400px' }"
-      (onHide)="onDialogHide()"
-    >
+  [header]="dialogHeader" 
+  [(visible)]="editUserDialog"
+  [modal]="true"
+  [responsive]="true"
+  [style]="{ width: '400px' }"
+  (onHide)="onDialogHide()"
+>
       <form [formGroup]="userForm" (ngSubmit)="saveUser()">
         <div class="p-fluid">
           <div class="p-field">
