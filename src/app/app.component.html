@@ -75,20 +75,20 @@
         <td>{{ user.email }}</td>
         <td>{{ user.username }}</td>
         <td>
-            <button
-              pButton
-              pRipple
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-success mr-2 button-margin"
-              (click)="editUser(user)"
-            ></button>
-            <button
-              pButton
-              pRipple
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-warning "
-              (click)="deleteUser(user.id)"
-            ></button>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success mr-2 button-margin"
+            (click)="editUser(user)"
+          ></button>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-warning"
+            (click)="deleteUser(user.id)"
+          ></button>
         </td>
       </tr>
     </ng-template>
@@ -101,15 +101,15 @@
 </div>
 
 <div *ngIf="formViewVisible" [@fadeInOut]>
-  <div>
+  <div >
     <p-dialog
-  [header]="dialogHeader" 
-  [(visible)]="editUserDialog"
-  [modal]="true"
-  [responsive]="true"
-  [style]="{ width: '400px' }"
-  (onHide)="onDialogHide()"
->
+      [header]="dialogHeader"
+      [(visible)]="editUserDialog"
+      [modal]="true"
+      [responsive]="true"
+      [style]="{ width: '600px', height:'75vh' }"
+      (onHide)="onDialogHide()"
+    >
       <form [formGroup]="userForm" (ngSubmit)="saveUser()">
         <div class="p-fluid">
           <div class="p-field">
@@ -198,7 +198,7 @@
             </div>
           </div>
         </div>
-        <div class="p-dialog-footer">
+        <div class="p-dialog-footer button-bottom">
           <button
             #saveButton
             pButton
