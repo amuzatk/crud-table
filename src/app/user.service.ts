@@ -9,8 +9,6 @@ import { User } from './models/users';
 })
 export class UserService {
   private apiUrl = 'https://fakestoreapi.com/users';
-  // private apiUrl1 = 'https://jsonplaceholder.typicode.com/posts';
-
 
   constructor(private http: HttpClient) {}
 
