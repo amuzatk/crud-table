@@ -1,6 +1,4 @@
-<div *ngIf="loading">
-  <div class="spinner"></div>
-</div>
+<app-loading-spinner [loading]="loading"></app-loading-spinner>
 
 <div *ngIf="!loading">
   <p-toast></p-toast>
@@ -105,7 +103,7 @@
   [responsive]="true"
   [baseZIndex]="1000"
   (onHide)="onDialogHide()"
-  [style]="{ width: '600px', height:'75vh' }"
+  [style]="{ width: '600px', height: '75vh' }"
 >
   <app-user-form
     [userForm]="userForm"
