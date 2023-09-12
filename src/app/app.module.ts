@@ -10,9 +10,13 @@ import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
+
+
+import { UserFormComponent } from './user-form/user-form.component';
 @NgModule({
   declarations: [
     AppComponent,
+    UserFormComponent
   ],
   imports: [
     BrowserModule,

@@ -1,230 +1,3 @@
-<!-- <div *ngIf="loading">
-  <div class="spinner"></div>
-</div>
-
-<div *ngIf="!loading">
-  <p-toast></p-toast>
-  <p-toolbar styleClass="mb-4 gap-2">
-    <ng-template pTemplate="left">
-      <button
-        pButton
-        pRipple
-        label="New"
-        icon="pi pi-plus"
-        class="p-button-success mr-2"
-        (click)="openNew()"
-      ></button>
-    </ng-template>
-  </p-toolbar> -->
-  <!-- <p-table
-    #dt
-    [value]="users"
-    [rows]="10"
-    [paginator]="true"
-    [globalFilterFields]="['name', 'email']"
-    [tableStyle]="{ 'min-width': '75rem' }"
-    [(selection)]="selectedUsers"
-    [rowHover]="true"
-    dataKey="id"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [showCurrentPageReport]="true"
-  >
-    <ng-template pTemplate="caption">
-      <div class="flex align-items-center justify-content-between">
-        <h2 class="m-0">User Management Dashboard</h2>
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input
-            type="text"
-            #searchInput
-            (input)="dt?.filterGlobal(searchInput.value, 'contains')"
-            placeholder="Search..."
-            class="p-inputtext"
-          />
-        </span>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 4rem">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th pSortableColumn="name" style="min-width: 15rem">
-          Name <p-sortIcon field="name"></p-sortIcon>
-        </th>
-        <th pSortableColumn="email" style="min-width: 15rem">
-          Email <p-sortIcon field="email"></p-sortIcon>
-        </th>
-        <th pSortableColumn="role" style="min-width: 15rem">
-          Role <p-sortIcon field="role"></p-sortIcon>
-        </th>
-        <th>Action</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-user>
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="user"></p-tableCheckbox>
-        </td>
-        <td>
-          <ng-container *ngIf="user && user.name">
-            {{ user.name?.firstname }} {{ user.name?.lastname }}
-          </ng-container>
-        </td>
-
-        <td>{{ user.email }}</td>
-        <td>{{ user.username }}</td>
-        <td>
-          <button
-            pButton
-            pRipple
-            icon="pi pi-pencil"
-            class="p-button-rounded p-button-success mr-2 button-margin"
-            (click)="editUser(user)"
-          ></button>
-          <button
-            pButton
-            pRipple
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-warning"
-            (click)="deleteUser(user.id)"
-          ></button>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="summary">
-      <div class="flex align-items-center justify-content-between">
-        In total there are {{ users ? users.length : 0 }} users.
-      </div>
-    </ng-template>
-  </p-table>
-</div>
-
-<div *ngIf="formViewVisible" [@fadeInOut]>
-  <div >
-    <p-dialog
-      [header]="dialogHeader"
-      [(visible)]="editUserDialog"
-      [modal]="true"
-      [responsive]="true"
-      [style]="{ width: '600px', height:'75vh' }"
-      (onHide)="onDialogHide()"
-    >
-      <form [formGroup]="userForm" (ngSubmit)="saveUser()">
-        <div class="p-fluid">
-          <div class="p-field">
-            <label for="firstname">First Name</label>
-            <input
-              type="text"
-              id="firstname"
-              formControlName="firstname"
-              class="p-inputtext"
-            />
-            <div
-              *ngIf="
-                userForm.get('firstname')?.invalid &&
-                userForm.get('firstname')?.touched
-              "
-              class="p-error"
-            >
-              <span *ngIf="userForm.get('firstname')?.hasError('required')"
-                >First Name is required.</span
-              >
-            </div>
-          </div>
-
-          <div class="p-field">
-            <label for="lastname">Last Name</label>
-            <input
-              type="text"
-              id="lastname"
-              formControlName="lastname"
-              class="p-inputtext"
-            />
-            <div
-              *ngIf="
-                userForm.get('lastname')?.invalid &&
-                userForm.get('lastname')?.touched
-              "
-              class="p-error"
-            >
-              <span *ngIf="userForm.get('lastname')?.hasError('required')"
-                >Last Name is required.</span
-              >
-            </div>
-          </div>
-
-          <div class="p-field">
-            <label for="email">Email</label>
-            <input
-              type="text"
-              id="email"
-              formControlName="email"
-              class="p-inputtext"
-            />
-            <div
-              *ngIf="
-                userForm.get('email')?.invalid && userForm.get('email')?.touched
-              "
-              class="p-error"
-            >
-              <span *ngIf="userForm.get('email')?.hasError('required')"
-                >Email is required.</span
-              >
-              <span *ngIf="userForm.get('email')?.hasError('email')"
-                >Invalid email format.</span
-              >
-            </div>
-          </div>
-
-          <div class="p-field">
-            <label for="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              formControlName="username"
-              class="p-inputtext"
-            />
-            <div
-              *ngIf="
-                userForm.get('username')?.invalid &&
-                userForm.get('username')?.touched
-              "
-              class="p-error"
-            >
-              <span *ngIf="userForm.get('username')?.hasError('required')"
-                >Username is required.</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="p-dialog-footer button-bottom">
-          <button
-            #saveButton
-            pButton
-            type="submit"
-            label="Save"
-            icon="pi pi-check"
-            class="p-button-success"
-            [disabled]="userForm.invalid"
-          ></button>
-
-          <button
-            pButton
-            type="button"
-            label="Cancel"
-            icon="pi pi-times"
-            class="p-button-secondary"
-            (click)="cancelEdit()"
-          ></button>
-        </div>
-      </form>
-    </p-dialog>
-  </div>
-</div> -->
-
-
-
 <div *ngIf="loading">
   <div class="spinner"></div>
 </div>
@@ -281,8 +54,8 @@
         <th pSortableColumn="email" style="min-width: 15rem">
           Email <p-sortIcon field="email"></p-sortIcon>
         </th>
-        <th pSortableColumn="role" style="min-width: 15rem">
-          Role <p-sortIcon field="role"></p-sortIcon>
+        <th pSortableColumn="username" style="min-width: 15rem">
+          Username <p-sortIcon field="username"></p-sortIcon>
         </th>
         <th>Action</th>
       </tr>
@@ -297,7 +70,6 @@
             {{ user.name?.firstname }} {{ user.name?.lastname }}
           </ng-container>
         </td>
-
         <td>{{ user.email }}</td>
         <td>{{ user.username }}</td>
         <td>
@@ -326,127 +98,19 @@
   </p-table>
 </div>
 
-<div *ngIf="formViewVisible" [@fadeInOut]>
-  <div>
-    <p-dialog
-      [header]="dialogHeader"
-      [(visible)]="editUserDialog"
-      [modal]="true"
-      [responsive]="true"
-      [style]="{ width: '600px', height:'80vh' }"
-      (onHide)="onDialogHide()"
-    >
-      <form [formGroup]="userForm" (ngSubmit)="saveUser()">
-        <div class="p-fluid">
-          <div class="p-field">
-            <label for="firstname">First Name</label>
-            <input
-              type="text"
-              id="firstname"
-              formControlName="firstname"
-              class="p-inputtext"
-            />
-            <div
-              *ngIf="
-                userForm.get('firstname')?.invalid &&
-                userForm.get('firstname')?.touched
-              "
-              class="p-error"
-            >
-              <span *ngIf="userForm.get('firstname')?.hasError('required')"
-                >First Name is required.</span
-              >
-            </div>
-          </div>
-
-          <div class="p-field">
-            <label for="lastname">Last Name</label>
-            <input
-              type="text"
-              id="lastname"
-              formControlName="lastname"
-              class="p-inputtext"
-            />
-            <div
-              *ngIf="
-                userForm.get('lastname')?.invalid &&
-                userForm.get('lastname')?.touched
-              "
-              class="p-error"
-            >
-              <span *ngIf="userForm.get('lastname')?.hasError('required')"
-                >Last Name is required.</span
-              >
-            </div>
-          </div>
-
-          <div class="p-field">
-            <label for="email">Email</label>
-            <input
-              type="text"
-              id="email"
-              formControlName="email"
-              class="p-inputtext"
-            />
-            <div
-              *ngIf="
-                userForm.get('email')?.invalid && userForm.get('email')?.touched
-              "
-              class="p-error"
-            >
-              <span *ngIf="userForm.get('email')?.hasError('required')"
-                >Email is required.</span
-              >
-              <span *ngIf="userForm.get('email')?.hasError('email')"
-                >Invalid email format.</span
-              >
-            </div>
-          </div>
-
-          <div class="p-field">
-            <label for="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              formControlName="username"
-              class="p-inputtext"
-            />
-            <div
-              *ngIf="
-                userForm.get('username')?.invalid &&
-                userForm.get('username')?.touched
-              "
-              class="p-error"
-            >
-              <span *ngIf="userForm.get('username')?.hasError('required')"
-                >Username is required.</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="p-dialog-footer button-bottom">
-          <button
-            #saveButton
-            pButton
-            type="submit"
-            label="Save"
-            icon="pi pi-check"
-            class="p-button-success"
-            [disabled]="userForm.invalid"
-          ></button>
-
-          <button
-            pButton
-            type="button"
-            label="Cancel"
-            icon="pi pi-times"
-            class="p-button-secondary"
-            (click)="cancelEdit()"
-          ></button>
-        </div>
-      </form>
-    </p-dialog>
-  </div>
-</div>
-
-
+<p-dialog
+  header="{{ dialogHeader }}"
+  [(visible)]="formViewVisible"
+  [modal]="true"
+  [responsive]="true"
+  [baseZIndex]="1000"
+  (onHide)="onDialogHide()"
+  [style]="{ width: '600px', height:'75vh' }"
+>
+  <app-user-form
+    [userForm]="userForm"
+    [user]="selectedUserForEdit"
+    (saveUserEvent)="saveUser($event)"
+    (cancelEditEvent)="cancelEdit()"
+  ></app-user-form>
+</p-dialog>

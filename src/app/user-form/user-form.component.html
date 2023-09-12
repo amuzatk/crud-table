@@ -1,0 +1,108 @@
+<form [formGroup]="userForm" (ngSubmit)="onSaveUser()">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="firstname">First Name</label>
+      <input
+        type="text"
+        id="firstname"
+        formControlName="firstname"
+        class="p-inputtext"
+      />
+      <div
+        *ngIf="
+          userForm.get('firstname')?.invalid &&
+          userForm.get('firstname')?.touched
+        "
+        class="p-error"
+      >
+        <span *ngIf="userForm.get('firstname')?.hasError('required')">
+          First Name is required.
+        </span>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="lastname">Last Name</label>
+      <input
+        type="text"
+        id="lastname"
+        formControlName="lastname"
+        class="p-inputtext"
+      />
+      <div
+        *ngIf="
+          userForm.get('lastname')?.invalid &&
+          userForm.get('lastname')?.touched
+        "
+        class="p-error"
+      >
+        <span *ngIf="userForm.get('lastname')?.hasError('required')">
+          Last Name is required.
+        </span>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="email">Email</label>
+      <input
+        type="text"
+        id="email"
+        formControlName="email"
+        class="p-inputtext"
+      />
+      <div
+        *ngIf="
+          userForm.get('email')?.invalid && userForm.get('email')?.touched
+        "
+        class="p-error"
+      >
+        <span *ngIf="userForm.get('email')?.hasError('required')">
+          Email is required.
+        </span>
+        <span *ngIf="userForm.get('email')?.hasError('email')">
+          Invalid email format.
+        </span>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        formControlName="username"
+        class="p-inputtext"
+      />
+      <div
+        *ngIf="
+          userForm.get('username')?.invalid &&
+          userForm.get('username')?.touched
+        "
+        class="p-error"
+      >
+        <span *ngIf="userForm.get('username')?.hasError('required')">
+          Username is required.
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="p-dialog-footer button-bottom">
+    <button
+      pButton
+      type="submit"
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-success"
+      [disabled]="userForm.invalid"
+    ></button>
+
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-secondary"
+      (click)="cancelEditEvent.emit()"
+    ></button>
+  </div>
+</form>
