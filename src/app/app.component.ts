@@ -102,9 +102,9 @@ export class AppComponent implements OnInit {
     this.userForm.reset();
     this.userForm.markAsUntouched();
     this.editUserDialog = true;
-    this.isCreatingUser = true; // Set the flag to indicate you are creating a new user
+    this.isCreatingUser = true; 
     this.formViewVisible = true;
-    this.dialogHeader = 'Create User'; // Set the dialog header to "Create User"
+    this.dialogHeader = 'Create User'; 
   }
 
   deleteSelectedUsers() {
