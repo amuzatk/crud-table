@@ -24,15 +24,13 @@ import { animate, style, trigger, transition } from '@angular/animations';
   ],
 })
 export class AppComponent implements OnInit {
-  posts: User[] = [];
+  title = 'stackbuld-task';
   loading = false;
   showFormView = false;
   userForm: FormGroup;
   selectedUserForEdit: User | null = null;
-  showMenu = false;
-  title = 'stackbuld-task';
   isCreatingUser: boolean = false;
-  dialogHeader: string = 'Edit User'; 
+  dialogHeader: string = 'Create User'; 
 
   @ViewChild('dt', { static: false })
   dt!: Table; 
@@ -95,6 +93,9 @@ export class AppComponent implements OnInit {
       }
     );
   }
+  getDialogHeader(): string {
+    return this.isCreatingUser ? 'Create User' : 'Edit User';
+  }
 
   openNew() {
     this.selectedUserForEdit = null;
@@ -103,7 +104,8 @@ export class AppComponent implements OnInit {
     this.editUserDialog = true;
     this.isCreatingUser = true;
     this.formViewVisible = true;
-    this.dialogHeader = 'Create User';
+    // this.dialogHeader = 'Create User';
+    this.dialogHeader = this.getDialogHeader();
   }
 
   deleteSelectedUsers() {
@@ -131,6 +133,8 @@ export class AppComponent implements OnInit {
       });
       this.formViewVisible = true;
       this.editUserDialog = true;
+      // this.dialogHeader = 'Edit User';
+      this.dialogHeader = this.getDialogHeader();
     }
   }
   
