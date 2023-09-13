@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <app-loading-spinner [loading]="loading"></app-loading-spinner>
 <div *ngIf="!loading">
   <app-user-list [users]="users" (editUser)="editUser($event)" (deleteUser)="deleteUser($event)"

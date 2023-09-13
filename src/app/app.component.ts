@@ -102,17 +102,33 @@ export class AppComponent implements OnInit {
 
   deleteUser(postId: number | string): void {
     if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(postId).subscribe(() => {
-        this.users = this.users.filter((post) => post.id !== postId);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'User Deleted',
-          life: 3000,
-        });
+      this.loading = true;
+  
+      this.userService.deleteUser(postId).subscribe(
+        () => {
+          this.users = this.users.filter((user) => user.id !== postId);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'User Deleted',
+            life: 3000,
+          });
+        },
+        (error) => {
+          console.error('Error deleting user:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to delete user. Please try again later.',
+            life: 3000,
+          });
+        }
+      ).add(() => {
+        this.loading = false;
       });
     }
   }
+  
 
   hideDialog() {
     this.userDialog = false;
@@ -122,21 +138,34 @@ export class AppComponent implements OnInit {
   showForm() {
     this.showFormView = true;
   }
-
+  
   saveUser(newUser: User) {
     this.submitted = true;
     const formValues = this.userForm.value;
-
-    if (this.selectedUserForEdit) {
+    const isEditing = !!this.selectedUserForEdit;
+  
+    this.formViewVisible = false;
+  
+    this.loading = true;
+  
+    if (isEditing && this.selectedUserForEdit) {
       this.selectedUserForEdit.name.firstname = formValues.firstname;
       this.selectedUserForEdit.name.lastname = formValues.lastname;
       this.selectedUserForEdit.email = formValues.email;
       this.selectedUserForEdit.username = formValues.username;
-
-      this.userService.updateUser(this.selectedUserForEdit).subscribe((updatedUser) => {
-        const index = this.findIndexById(updatedUser.id);
-        if (index !== -1) {
-          this.users[index] = updatedUser;
+  
+      this.userService.updateUser(this.selectedUserForEdit).subscribe(
+        (updatedUser) => {
+          const index = this.findIndexById(updatedUser.id);
+          if (index !== -1) {
+            this.users[index] = updatedUser;
+          }
+        },
+        (error) => {
+          console.error('Error updating user:', error);
+        },
+        () => {
+          this.loading = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Successful',
@@ -144,7 +173,7 @@ export class AppComponent implements OnInit {
             life: 3000,
           });
         }
-      });
+      );
     } else {
       const newUser: User = {
         id: this.createId(),
@@ -167,25 +196,28 @@ export class AppComponent implements OnInit {
         },
         phone: '',
       };
-
-      this.userService.addUser(newUser).subscribe((createdUser) => {
-        this.users.push(createdUser);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'User Created',
-          life: 3000,
-        });
-      });
+  
+      this.userService.addUser(newUser).subscribe(
+        (createdUser) => {
+          this.users.push(createdUser);
+        },
+        (error) => {
+          console.error('Error creating user:', error);
+        },
+        () => {
+          this.loading = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'User Created',
+            life: 3000,
+          });
+        }
+      );
     }
-
-    this.users = [...this.users];
-    this.editUserDialog = false;
-    this.selectedUserForEdit = null;
-    this.userForm.reset();
-    this.formViewVisible = false;
   }
-
+  
+  
   cancelEdit() {
     this.formViewVisible = false;
     this.editUserDialog = false;
@@ -204,8 +236,4 @@ export class AppComponent implements OnInit {
     return id;
   }
 
-  getSeverity(status: string) {
-    switch (status) {
-    }
-  }
 }
