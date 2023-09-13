@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
     });
+    // this.formViewVisible = false;
   }
 
   ngOnInit() {
