@@ -217,7 +217,6 @@ export class AppComponent implements OnInit {
     }
   }
   
-  
   cancelEdit() {
     this.formViewVisible = false;
     this.editUserDialog = false;
