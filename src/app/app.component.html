@@ -1,9 +1,18 @@
 <p-toast></p-toast>
-<app-loading-spinner [loading]="loading"></app-loading-spinner>
-<div *ngIf="!loading">
-  <app-user-list [users]="users" (editUser)="editUser($event)" (deleteUser)="deleteUser($event)"
-    (openNewEvent)="openNew()"></app-user-list>
+<div *ngIf="!loading; else otherContent">
+  <app-user-list
+    [users]="users"
+    (editUser)="editUser($event)"
+    (deleteUser)="deleteUser($event)"
+    (openNewEvent)="openNew()"
+  ></app-user-list>
 </div>
+
+<ng-template #otherContent>
+  <app-loading-spinner [loading]="loading"></app-loading-spinner>
+  <div>Loading...</div>
+</ng-template>
+
 <p-dialog
   header="{{ dialogHeader }}"
   [(visible)]="formViewVisible"
@@ -20,4 +29,3 @@
     (cancelEditEvent)="cancelEdit()"
   ></app-user-form>
 </p-dialog>
-
